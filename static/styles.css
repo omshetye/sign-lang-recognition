@@ -1,0 +1,272 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa; /* Light gray background */
+  padding-top: 4.5rem; /* Adjust for fixed navbar */
+  margin: 0;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 960px; /* Limit content width */
+  margin: 20px auto; /* Center content horizontally with margin */
+  padding: 0 20px; /* Add horizontal padding */
+}
+
+.container-mt-5 {
+  margin-top: 100px; /* Adjust for fixed navbar */
+  margin-left: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  font-family: merriweather, arial, helvetica, arial, sans;
+}
+
+.col-md-5 {
+  width: 100%;
+  margin-left: 30px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #0c1822; /* Dark background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  font-family: wittgenstein;
+  padding: 10px 20px;
+}
+
+
+.navbar-brand {
+  font-size: 1.5rem; /* Larger font size for brand */
+  color: #ffffff; /* Light text color for brand */
+  letter-spacing: 1px; /* Increase letter spacing */
+}
+
+.navbar-dark .navbar-brand:hover {
+  color: #007bff; /* Change color on hover */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Header Styling */
+h1 {
+  margin-bottom: 30px; /* Add space below heading */
+  font-size: 2.5rem; /* Increase font size */
+  color: #007bff; /* Primary color */
+  text-align: center; /* Center-align text */
+}
+
+/* Button Styling */
+#camera-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+#other-button, #speak-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 5px;
+  margin-right: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+#speak-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Lift button on hover */
+}
+
+#camera-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Lift button on hover */
+}
+
+#camera-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+#speak-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+#other-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Lift button on hover */
+}
+
+#other-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.pred-sentence {
+  resize: both; 
+  overflow: auto;
+  height: 480px;
+  width: 640px;
+  border: solid black, 2px;
+}
+
+/* Video Feed Styling */
+#video {
+  display: block; /* Ensure video is displayed as a block element */
+  margin: 20px auto; /* Center-align video with margin */
+  border: 3px solid #0c1927; /* Add border for visibility */
+  max-width: 100%; /* Ensure video fits within container */
+  height: auto; /* Maintain aspect ratio */
+  padding: 10px; /* Add padding around the video */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+  border-radius: 4px;
+}
+
+.video-feed {
+  border-radius: 5px;
+}
+/* Switch Styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input[type="checkbox"] {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #222;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Form Styling */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  background-color: #343a40;
+  color: #ffffff;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212; /* Dark background color */
+  color: #ffffff; /* Light text color */
+}
+
+body.dark-mode .navbar {
+  background-color: #1f1f1f; /* Darker background for navbar */
+}
+
+body.dark-mode .navbar-brand {
+  color: #ffffff; /* Light text color for brand */
+}
+
+body.dark-mode #camera-button {
+  background-color: #555555; /* Dark button color */
+}
+
+body.dark-mode #speak-button {
+  background-color: #555555; /* Dark button color */
+}
+
+body.dark-mode #camera-button:hover {
+  background-color: #333333; /* Darker hover color */
+}
+
+body.dark-mode #other-button {
+  background-color: #555555; /* Dark button color */
+}
+
+body.dark-mode #speak-button:hover {
+  background-color: #333333; /* Darker hover color */
+}
+
+body.dark-mode #other-button:hover {
+  background-color: #333333; /* Darker hover color */
+}
+
+body.dark-mode #video {
+  border-color: #ffffff; /* Light border color */
+}
+
+body.dark-mode input[type="text"], body.dark-mode input[type="email"], body.dark-mode input[type="password"], body.dark-mode textarea {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+body.dark-mode input[type="text"]:focus, body.dark-mode input[type="email"]:focus, body.dark-mode input[type="password"]:focus, body.dark-mode textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+body.dark-mode footer {
+  background-color: #1f1f1f;
+}

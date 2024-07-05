@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}HastaTalk - Help{% endblock %}
+{% block content %}
+<body>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">HastaTalk - a tool for efficient sign language communication</a>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="dark-mode-checkbox">
+            <span class="slider round"></span>
+        </label>
+    </nav>
+
+    <div class="container-mt-5">
+        <div class="row">
+            <div class="col-md-5">
+                <h2>Video</h2>
+                <img id="video-feed" src="static/icons/plaaceholder.jpeg" height="660" width="540" style="border-radius: 5px;" class="img-fluid" alt="Video Feed">
+                <br>
+                <br>
+                <button id="camera-button" onclick="toggleCamera()">
+                    <i class="fas fa-camera"></i> Enable Camera
+                </button>
+            </div>
+            <div class="col-md-5">
+                <h2>Prediction </h2>
+                <p id="prediction" class="lead"></p>
+                <textarea id="pred-sentence" style="resize: both; overflow: auto;" rows="5" cols="50"></textarea>
+                <div class="btns">
+                    <button id="other-button" onclick="removeLastCharacter()"><i class="fas fa-backspace"></i></button>
+                    <button id="other-button" onclick="addSpace()">Space</button>
+                    <button id="other-button" onclick="clearWord()">Clear</button>
+                    <button id="speak-button" onclick="sendTextToTts()">Talk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
+
