@@ -31,10 +31,8 @@ pillow==10.4.0
 protobuf==4.25.3
 pycparser==2.22
 pyparsing==3.1.2
-pypiwin32==223
 python-dateutil==2.9.0.post0
 pyttsx3==2.90
-pywin32==306
 scikit-learn==1.5.1
 scipy==1.13.1
 six==1.16.0
