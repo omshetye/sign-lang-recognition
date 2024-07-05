@@ -41,3 +41,4 @@ sounddevice==0.4.7
 threadpoolctl==3.5.0
 werkzeug==3.0.3
 zipp==3.19.2
+gunicorn
