@@ -1,10 +1,10 @@
 absl-py==2.1.0
-attrs==23.2.0   
-blinker==1.8.2  
-cffi==1.16.0    
-click==8.1.7    
-colorama==0.4.6 
-comtypes==1.4.4 
+attrs==23.2.0
+blinker==1.8.2
+cffi==1.16.0
+click==8.1.7
+colorama==0.4.6
+comtypes==1.4.4
 contourpy==1.2.1
 cycler==0.12.1
 flask==3.0.3
@@ -31,8 +31,10 @@ pillow==10.4.0
 protobuf==4.25.3
 pycparser==2.22
 pyparsing==3.1.2
+pypiwin32==223
 python-dateutil==2.9.0.post0
 pyttsx3==2.90
+pywin32==306
 scikit-learn==1.5.1
 scipy==1.13.1
 six==1.16.0
@@ -41,4 +43,3 @@ sounddevice==0.4.7
 threadpoolctl==3.5.0
 werkzeug==3.0.3
 zipp==3.19.2
-gunicorn
