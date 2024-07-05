@@ -1,18 +1,18 @@
-from flask import Flask, render_template, request, Response, jsonify
-import pickle
-import cv2
-import mediapipe as mp
+from flask import Flask, render_template, request, jsonify
+import base64
 import numpy as np
+import mediapipe as mp
+import joblib
+import cv2
 import pyttsx3
 import threading
 
 app = Flask(__name__)
 camera_enabled = False
-cap = None
 
 # Load the model
 model_path = 'model/model_2.p'
-model_dict = pickle.load(open(model_path, 'rb'))
+model_dict = joblib.load(model_path)
 model = model_dict['model']
 
 # Initialize MediaPipe Hands
@@ -21,99 +21,118 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-def gen_frames():
-    global cap, camera_enabled
-    while True:
-        if camera_enabled and cap and cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                continue
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            results = hands.process(frame_rgb)
-            if results.multi_hand_landmarks:
-                for hand_landmarks in results.multi_hand_landmarks:
-                    mp_drawing.draw_landmarks(
-                        frame, hand_landmarks, mp_hands.HAND_CONNECTIONS,
-                        mp_drawing_styles.get_default_hand_landmarks_style(),
-                        mp_drawing_styles.get_default_hand_connections_style()
-                    )
-            _, buffer = cv2.imencode('.jpg', frame)
-            frame_bytes = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-        else:
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + b'' + b'\r\n')
-
 @app.route('/camera', methods=['POST'])
 def toggle_camera():
-    global camera_enabled, cap
+    global camera_enabled
     camera_enabled = not camera_enabled
-    if camera_enabled:
-        cap = cv2.VideoCapture(0)
-    else:
-        if cap:
-            cap.release()
-            cap = None
     return jsonify({'camera_enabled': camera_enabled})
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route('/predict', methods=['GET'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    global cap
-    if cap is None or not cap.isOpened():
-        return jsonify(prediction="")
-
-    ret, frame = cap.read()
-    if not ret:
-        return jsonify(prediction="Failed to capture frame")
-    data_aux = []
-    x_ = []
-    y_ = []
-
-    H, W, _ = frame.shape
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands.process(frame_rgb)
+    data = request.json
+    frame_data = data.get('frame', '')
     
-    if results.multi_hand_landmarks:
-        print(f"Number of landmarks detected: {len(results.multi_hand_landmarks)}")
-        for hand_landmarks in results.multi_hand_landmarks:
-            for i in range(len(hand_landmarks.landmark)):
-                x = hand_landmarks.landmark[i].x
-                y = hand_landmarks.landmark[i].y
-                x_.append(x)
-                y_.append(y)
-
-        if len(x_) > 0 and len(y_) > 0:
-            min_x = min(x_)
-            min_y = min(y_)
+    if frame_data:
+        # Decode base64 image data
+        frame_bytes = base64.b64decode(frame_data.split(',')[1])
+        # Convert to numpy array
+        frame_np = np.frombuffer(frame_bytes, dtype=np.uint8)
+        # Decode image
+        if frame_np is not None:
+            frame = cv2.imdecode(frame_np, flags=cv2.IMREAD_COLOR)
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            results = hands.process(frame_rgb)
             
-            for i in range(len(hand_landmarks.landmark)):
-                x = hand_landmarks.landmark[i].x
-                y = hand_landmarks.landmark[i].y
-                data_aux.append(x - min_x)
-                data_aux.append(y - min_y)
+            data_aux = []
+            x_ = []
+            y_ = []
 
-            if len(data_aux) > 0:
-                prediction = model.predict([np.asarray(data_aux)])
-                predicted_character = prediction[0]
-                return jsonify(prediction=predicted_character)
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    for i in range(len(hand_landmarks.landmark)):
+                        x = hand_landmarks.landmark[i].x
+                        y = hand_landmarks.landmark[i].y
+                        x_.append(x)
+                        y_.append(y)
+
+                if len(x_) > 0 and len(y_) > 0:
+                    min_x = min(x_)
+                    min_y = min(y_)
+                    
+                    for i in range(len(hand_landmarks.landmark)):
+                        x = hand_landmarks.landmark[i].x
+                        y = hand_landmarks.landmark[i].y
+                        data_aux.append(x - min_x)
+                        data_aux.append(y - min_y)
+
+                    if len(data_aux) > 0:
+                        prediction = model.predict([np.asarray(data_aux)])
+                        predicted_character = prediction[0]
+                        print(predicted_character)
+                        return jsonify(prediction=predicted_character)
+                    else:
+                        return jsonify(prediction="No valid hand landmarks detected")
+                else:
+                    return jsonify(prediction="No valid hand landmarks detected")
+            else:
+                return jsonify(prediction="")
+        else:
+            return jsonify(prediction="Frame data not received")
+
+@app.route('/stream_video', methods=['POST'])
+def stream_video():
+    data = request.json
+    frame_data = data.get('frame', '')
+    
+    if frame_data:
+        # Decode base64 image data
+        frame_bytes = base64.b64decode(frame_data.split(',')[1])
+        # Convert to numpy array
+        frame_np = np.frombuffer(frame_bytes, dtype=np.uint8)
+        # Decode image
+        frame = cv2.imdecode(frame_np, flags=cv2.IMREAD_COLOR)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = hands.process(frame_rgb)
+        
+        data_aux = []
+        x_ = []
+        y_ = []
+
+        if results.multi_hand_landmarks:
+            for hand_landmarks in results.multi_hand_landmarks:
+                for i in range(len(hand_landmarks.landmark)):
+                    x = hand_landmarks.landmark[i].x
+                    y = hand_landmarks.landmark[i].y
+                    x_.append(x)
+                    y_.append(y)
+
+            if len(x_) > 0 and len(y_) > 0:
+                min_x = min(x_)
+                min_y = min(y_)
+                
+                for i in range(len(hand_landmarks.landmark)):
+                    x = hand_landmarks.landmark[i].x
+                    y = hand_landmarks.landmark[i].y
+                    data_aux.append(x - min_x)
+                    data_aux.append(y - min_y)
+
+                if len(data_aux) > 0:
+                    prediction = model.predict([np.asarray(data_aux)])
+                    predicted_character = prediction[0]
+                    return jsonify(prediction=predicted_character)
+                else:
+                    return jsonify(prediction="No valid hand landmarks detected")
             else:
                 return jsonify(prediction="No valid hand landmarks detected")
         else:
-            return jsonify(prediction="No valid hand landmarks detected")
+            return jsonify(prediction="")
     else:
-        return jsonify(prediction="")
-
-
+        return jsonify(prediction="Frame data not received")
+    
 def speak_text(text):
     # Reinitialize the pyttsx3 engine within the thread
     engine = pyttsx3.init()
