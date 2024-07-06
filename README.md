@@ -13,6 +13,38 @@ HastaTalk is a tool for efficient sign language communication using hand gesture
 - Real-time hand sign recognition
 - Ability to construct sentences from recognized signs
 - Speech-to-text conversion of recognized gestures
-- Speech-to-text conversion of recognized gestures
+- Toggle dark mode for better visibility
 
 ## Demo
+
+## Requirements
+- Pyhon 3.9
+- Flask
+- Medipipe
+- OpenCV
+- Numpy
+- Joblib
+
+  ## Installation
+  You can run the app on your system locally by following the below set of instructions:
+  1. Clone the repository
+       git clone https://github.com/omshetye/sign-lang-recognition.git
+       cd sign-lang-recognition
+     
+  3. Create a virtual environment and activate it:
+       python -m venv venv
+       source venv\Scripts\activate
+
+  4. Install the dependencies:
+        pip install -r requirements.txt
+
+  ## Usage
+  1. Running the application locally:
+        python app.py
+
+  2. Open your browser and navigate to http://127.0.0.1:8000
+
+## Acknowledgments
+- Mediapipe for hand landmark detection.
+- OpenCV for image processing.
+- Flask for the web framework.
