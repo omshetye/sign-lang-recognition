@@ -28,24 +28,24 @@ https://github.com/omshetye/sign-lang-recognition/assets/103515277/f029c5bf-e861
 - Numpy
 - Joblib
 
-  ## Installation
-  You can run the app on your system locally by following the below set of instructions:
-  1. Clone the repository
-       git clone https://github.com/omshetye/sign-lang-recognition.git
-       cd sign-lang-recognition
-     
-  3. Create a virtual environment and activate it:
-       python -m venv venv
-       source venv\Scripts\activate
+## Installation
+You can run the app on your system locally by following the below set of instructions:
+1. Clone the repository
+     git clone https://github.com/omshetye/sign-lang-recognition.git
+     cd sign-lang-recognition
+   
+3. Create a virtual environment and activate it:
+     python -m venv venv
+     source venv\Scripts\activate
 
-  4. Install the dependencies:
-        pip install -r requirements.txt
+4. Install the dependencies:
+      pip install -r requirements.txt
 
-  ## Usage
-  1. Running the application locally:
-        python app.py
+## Usage
+1. Running the application locally:
+      python app.py
 
-  2. Open your browser and navigate to http://127.0.0.1:8000
+2. Open your browser and navigate to http://127.0.0.1:8000
 
 ## Acknowledgments
 - Mediapipe for hand landmark detection.
