@@ -17,6 +17,9 @@ HastaTalk is a tool for efficient sign language communication using hand gesture
 
 ## Demo
 
+https://github.com/omshetye/sign-lang-recognition/assets/103515277/f029c5bf-e861-4cfb-93a5-17f238bf119a
+
+
 ## Requirements
 - Pyhon 3.9
 - Flask
